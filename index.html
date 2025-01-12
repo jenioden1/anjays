@@ -1,11 +1,11 @@
-<!DOCTYPE html>  
-<html lang="en">  
-<head>  
-  <meta charset="UTF-8">  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1, minimum-scale=1">  
-  <title>Selebrasi API</title>  
-  <style>  
-    :root {  
+<!DOCTYPE html>    
+<html lang="en">    
+<head>    
+  <meta charset="UTF-8">    
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1, minimum-scale=1">    
+  <title>Selebrasi API</title>    
+  <style>    
+  :root {  
       --border-color: #D7DBE3;  
       font-family: -apple-system, BlinkMacSystemFont, 'Roboto', 'Open Sans', 'Helvetica Neue', sans-serif;  
       --green: #0CD977;  
@@ -322,49 +322,80 @@
       transform: scale(1.1); /* Slightly enlarge on hover */  
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* Larger shadow on hover */  
     }  
-  </style>  
-</head>  
-<body>  
+  </style>    
+</head>    
+<body>    
+    
+  <div class="wrapper">    
+    <div class="gift-box">    
+      <div class="box">    
+        <div class="ribbon-bow"></div>    
+      </div>    
+      <button class="open-btn">Open Gift</button>    
+    </div>    
+    
+    <div class="modal" id="initial-modal">    
+      <span class="emoji bounce" style="text-shadow: 0 0 20px gold;">🤩✌️🐖🐽🔥🏆</span>    
+      <h4>Congratulations, Epinnnn</h4>    
+      <p style="margin-bottom: 20px;">Kita mendapatkan 100 api, selamat ya! 🤩✌️🐖🐽🔥</p>    
+      <div class="image-container">    
+        <img src="epin.jpg" alt="Epin">    
+        <img src="jeni.jpg" alt="Jeni">    
+      </div>    
+      <p style="font-weight: bold; font-size: small;">klik klik rayakan berkali kali dengan cepat</p>    
+      <a href="#" class="modal-btn celebrate-btn" style="margin-bottom: 10px; border-radius: 30px;">Rayakan</a>    
+    </div>    
   
-  <div class="wrapper">  
-    <div class="gift-box">  
-      <div class="box">  
-        <div class="ribbon-bow"></div>  
-      </div>  
-      <button class="open-btn">Open Gift</button>  
-    </div>  
-  
-    <div class="modal" id="initial-modal">  
-      <span class="emoji bounce" style="text-shadow: 0 0 20px gold;">🤩✌️🐖🐽🔥🏆</span>  
-      <h4>Congratulations, Epinnnn</h4>  
-      <p style="margin-bottom: 20px;">Kita mendapatkan 6 api🐖🐽🔥</p>  
-      <div class="image-container">  
-        <img src="epin.jpg" alt="Epin">  
-        <img src="jeni.jpg" alt="Jeni">  
-      </div>  
-      <p style="font-weight: bold; font-size: small;">klik klik rayakan berkali kali dengan cepat</p>  
-      <a href="#" class="modal-btn celebrate-btn" style="margin-bottom: 10px; border-radius: 30px;">Rayakan</a>  
-    </div>  
-  
-    <div class="modal" id="mabar-modal" style="display: none;">  
-      <span class="emoji bounce" style="text-shadow: 0 0 20px gold;">Mabar!</span>  
-      <div class="modal-content">  
-        <img src="mabar.jpg" alt="Mabar Image">  
-        <div class="text-content">  
-          <h4 class="mabar-text">Ayo Mabar Lagi!</h4>  
-          <p class="mabar-text">"Soalnya sekarang aku mau menang hahaha"</p>  
-        </div>  
-      </div>  
-      <a href="https://wa.me/6285221454357?text=Ayo%20mabar%20stumble%20guys%20lagi%2C%20kamu%20belum%20pernah%20menang" class="modal-btn" style="margin-top: 10px; border-radius: 30px;">Klik Disini untuk Mabar</a>  
-    </div>  
-  
-    <div id="confetti-wrapper"></div>  
-      
-    <!-- Audio Element -->  
+    <div id="confetti-wrapper"></div>    
+        
+    <!-- Audio Element -->    
+    <audio id="bubble-sound" src="bubble.mp3"></audio>    
+    
     <audio id="background-music" src="musik.mp3" loop></audio>  
-  </div>  
-  
-  <script>  
+  </div>    
+    
+  <script>    
+     // Play music  
+     const music = document.getElementById('background-music');  
+      music.play(); // Start playing the music  
+  document.addEventListener('DOMContentLoaded', function() {  
+  const backgroundMusic = document.getElementById('background-music');  
+  backgroundMusic.volume = 0.2; // Set volume to 30%  
+  backgroundMusic.play(); // Start playing the music  
+});  
+
+    document.querySelector('.open-btn').addEventListener('click', function () {    
+      // Hide gift box and button    
+      document.querySelector('.gift-box').style.display = 'none';    
+    
+      // Show the modal    
+      document.querySelector('#initial-modal').style.display = 'block';    
+    
+      // Trigger confetti    
+      for (let i = 0; i < 100; i++) {    
+        // Random width & height between 0 and viewport    
+        var randomWidth = Math.floor(Math.random() * window.innerWidth);    
+        var randomHeight = Math.floor(Math.random() * window.innerHeight);    
+    
+        // Create confetti piece    
+        var confetti = document.createElement('div');    
+        confetti.className = 'confetti';    
+        confetti.style.top = randomHeight + 'px';    
+        confetti.style.right = randomWidth + 'px';    
+        confetti.style.backgroundColor = ['#0CD977', '#FF1C1C', '#FF93DE', '#5767ED', '#FFC61C', '#8497B0'][Math.floor(Math.random() * 6)];    
+        confetti.style.animationDelay = Math.random() * 5 + 's'; // Add delay to create a staggered effect    
+        document.getElementById('confetti-wrapper').appendChild(confetti);    
+      }    
+    });    
+    
+    document.querySelector('.celebrate-btn').addEventListener('click', function () {    
+      // Play bubble sound    
+      const bubbleSound = document.getElementById('bubble-sound');    
+      bubbleSound.currentTime = 0; // Reset sound to the beginning    
+      bubbleSound.play();    
+    
+    });    
+
     document.querySelector('.open-btn').addEventListener('click', function () {  
       // Hide gift box and button  
       document.querySelector('.gift-box').style.display = 'none';  
@@ -440,7 +471,7 @@
       document.querySelector('#mabar-modal').style.display = 'none';  
       document.querySelector('#initial-modal').style.display = 'block';  
     });  
-  </script>  
-  
-</body>  
+  </script>    
+    
+</body>    
 </html>  
