@@ -1,0 +1,446 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1, minimum-scale=1">  
+  <title>Selebrasi API</title>  
+  <style>  
+    :root {  
+      --border-color: #D7DBE3;  
+      font-family: -apple-system, BlinkMacSystemFont, 'Roboto', 'Open Sans', 'Helvetica Neue', sans-serif;  
+      --green: #0CD977;  
+      --red: #FF1C1C;  
+      --pink: #FF93DE;  
+      --purple: #B47CFF;  
+      --yellow: #FFC61C;  
+      --gold: #FFD700;  
+    }  
+  
+    body {  
+      overflow: hidden;  
+      width: 100%;  
+      height: 100%;  
+      background-color: #FFF5F7;  
+      touch-action: manipulation;  
+    }  
+  
+    .wrapper {  
+      display: flex;  
+      justify-content: center;  
+      align-items: center;  
+      height: 100vh;  
+      position: relative;  
+    }  
+  
+    .modal {  
+      display: none;  
+      width: 300px;  
+      margin: 0 auto;  
+      border: 1px solid var(--border-color);  
+      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);  
+      background-color: #fff;  
+      border-radius: 1rem;  
+      padding: 2rem;  
+      z-index: 1;  
+      text-align: center;  
+    }  
+  
+    .emoji {  
+      display: block;  
+      text-align: center;  
+      font-size: 2rem; /* Increased size */  
+      line-height: 5rem;  
+      padding: 5px;  
+      animation: bounce 1s infinite; /* Bounce effect */  
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.7), 0 0 40px rgba(255, 255, 255, 0.5);  
+    }  
+  
+    h4 {  
+      opacity: 0; /* Start invisible */  
+      transform: translateY(20px); /* Start position */  
+      animation-fill-mode: forwards; /* Keep the end state */  
+      font-size: 1.5em; /* Adjusted size */  
+      color: #FF5733; /* Bright coral color */  
+      font-weight: bold;  
+      margin: 10px 0;  
+      text-shadow: 1px 1px 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.5); /* Subtle shadow */  
+      animation: fadeInUp 1s ease-out forwards 0.5s; /* Delay for smoother appearance */  
+    }  
+  
+    p {  
+      opacity: 0; /* Start invisible */  
+      transform: translateY(20px); /* Start position */  
+      animation-fill-mode: forwards; /* Keep the end state */  
+      font-size: 1.2em; /* Adjusted size */  
+      color: #555; /* Slightly darker gray color */  
+      margin: 5px 0;  
+      text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.5), 0 0 5px rgba(255, 255, 255, 0.3); /* Subtle shadow */  
+      animation: fadeInUp 1s ease-out forwards 0.8s; /* Delay for smoother appearance */  
+    }  
+  
+    @keyframes fadeInUp {  
+      0% {  
+        opacity: 0;  
+        transform: translateY(20px);  
+      }  
+      100% {  
+        opacity: 1;  
+        transform: translateY(0);  
+      }  
+    }  
+  
+    .modal-btn {  
+      display: block;  
+      margin: 0 -rem -2rem -2rem;  
+      padding: 1rem 2rem;  
+      font-size: .75rem;  
+      text-transform: uppercase;  
+      text-align: center;  
+      color: #fff;  
+      font-weight: 600;  
+      border-radius: 0 0 .25rem .25rem;  
+      background-color: var(--green);  
+      text-decoration: none;  
+      transition: background-color 0.3s ease;  
+    }  
+  
+    .modal-btn:hover {  
+      background-color: var(--yellow);  
+    }  
+  
+    @keyframes confettiRain {  
+      0% {  
+        opacity: 1;  
+        margin-top: -100vh;  
+        margin-left: -200px;  
+      }  
+      100% {  
+        opacity: 1;  
+        margin-top: 100vh;  
+        margin-left: 200px;  
+      }  
+    }  
+  
+    .confetti {  
+      opacity: 0;  
+      position: absolute;  
+      width: 1rem;  
+      height: 1.5rem;  
+      transition: 500ms ease;  
+      animation: confettiRain 5s infinite;  
+    }  
+  
+    #confetti-wrapper {  
+      overflow: hidden !important;  
+    }  
+  
+    /* Cute Gift Box Styling */  
+    .gift-box {  
+      display: flex;  
+      flex-direction: column;  
+      justify-content: center;  
+      align-items: center;  
+      margin-top: 20px;  
+    }  
+  
+    .box {  
+      width: 200px;  
+      height: 200px;  
+      background-color: var(--pink);  
+      position: relative;  
+      display: flex;  
+      justify-content: center;  
+      align-items: center;  
+      cursor: pointer;  
+      border-radius: 20px;  
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);  
+    }  
+  
+    .box::before, .box::after {  
+      content: '';  
+      position: absolute;  
+      background-color: var(--gold);  
+    }  
+  
+    .box::before {  
+      width: 20px;  
+      height: 100%;  
+    }  
+  
+    .box::after {  
+      height: 20px;  
+      width: 100%;  
+    }  
+  
+    .ribbon-bow {  
+      position: absolute;  
+      top: -25px;  
+      width: 70px;  
+      height: 50px;  
+      background-color: var(--purple);  
+      border-radius: 10px;  
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  
+    }  
+  
+    .ribbon-bow::before, .ribbon-bow::after {  
+      content: '';  
+      position: absolute;  
+      background-color: var(--purple);  
+    }  
+  
+    .ribbon-bow::before {  
+      width: 50px;  
+      height: 25px;  
+      top: 10px;  
+      left: -40px;  
+      border-radius: 10px 10px 0 0;  
+      transform: rotate(-45deg);  
+    }  
+  
+    .ribbon-bow::after {  
+      width: 50px;  
+      height: 25px;  
+      top: 10px;  
+      right: -40px;  
+      border-radius: 10px 10px 0 0;  
+      transform: rotate(45deg);  
+    }  
+  
+    .open-btn {  
+      margin-top: 20px;  
+      padding: 10px 20px;  
+      background-color: var(--purple);  
+      color: #fff;  
+      border: none;  
+      font-size: 1rem;  
+      border-radius: 20px;  
+      cursor: pointer;  
+      transition: background-color 0.3s ease;  
+    }  
+  
+    .open-btn:hover {  
+      background-color: var(--yellow);  
+    }  
+  
+    /* Fireworks Effect */  
+    .firework {  
+      position: absolute;  
+      border-radius: 50%;  
+      animation: explode 1s forwards;  
+    }  
+  
+    @keyframes explode {  
+      0% {  
+        transform: scale(1);  
+        opacity: 1;  
+      }  
+      100% {  
+        transform: scale(2);  
+        opacity: 0;  
+      }  
+    }  
+  
+    /* Balloons */  
+    .balloon {  
+      position: absolute;  
+      bottom: -100px;  
+      border-radius: 50%;  
+      animation: float 4s forwards;  
+      opacity: 0.8;  
+    }  
+  
+    @keyframes float {  
+      0% {  
+        bottom: -100px;  
+        transform: translateX(0);  
+      }  
+      100% {  
+        bottom: 100vh;  
+        transform: translateX(calc(-50vw + 100px)); /* Random horizontal movement */  
+      }  
+    }  
+  
+    /* Bouncing Animation for Emoji */  
+    .bounce {  
+      animation: bounce 1s infinite;  
+    }  
+  
+    @keyframes bounce {  
+      0%, 100% {  
+        transform: translateY(0);  
+      }  
+      50% {  
+        transform: translateY(-20px);  
+      }  
+    }  
+  
+    /* Mabar Modal Grid */  
+    #mabar-modal .modal-content {  
+      display: flex;  
+      align-items: center;  
+      justify-content: center; /* Center content */  
+    }  
+  
+    #mabar-modal .modal-content img {  
+      width: 120px; /* Adjust size of the image */  
+      height: 120px; /* Maintain aspect ratio */  
+      margin-right: 20px; /* Spacing between image and text */  
+      margin-bottom: 30px;  
+    }  
+  
+    /* Flex container for text */  
+    .text-content {  
+      display: flex;  
+      flex-direction: column;  
+      justify-content: center; /* Center text vertically */  
+      align-items: center; /* Center text horizontally */  
+    }  
+  
+    .mabar-text {  
+      text-align: center; /* Center text */  
+      margin-bottom: 20px; /* Add space below the text */  
+    }  
+  
+    /* Styling for epin and jeni images */  
+    .image-container {   
+      justify-content: center;  
+      align-items: center;  
+      margin-bottom: 20px;  
+    }  
+  
+    .image-container img {  
+      width: 100%; /* Adjust size of the image */  
+      height: 100%; /* Maintain aspect ratio */  
+      border-radius: 10%; /* Circular shape */  
+      border: 2px solid var(--gold); /* Gold border */  
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */  
+      margin: 0 10px; /* Spacing between images */  
+      transition: transform 0.3s ease, box-shadow 0.3s ease;  
+    }  
+  
+    .image-container img:hover {  
+      transform: scale(1.1); /* Slightly enlarge on hover */  
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* Larger shadow on hover */  
+    }  
+  </style>  
+</head>  
+<body>  
+  
+  <div class="wrapper">  
+    <div class="gift-box">  
+      <div class="box">  
+        <div class="ribbon-bow"></div>  
+      </div>  
+      <button class="open-btn">Open Gift</button>  
+    </div>  
+  
+    <div class="modal" id="initial-modal">  
+      <span class="emoji bounce" style="text-shadow: 0 0 20px gold;">🤩✌️🏆</span>  
+      <h4>Congratulations, Epinnnn</h4>  
+      <p style="margin-bottom: 20px;">Kita mendapatkan 6 api🐖🐽🔥</p>  
+      <div class="image-container">  
+        <img src="epin.jpg" alt="Epin">  
+        <img src="jeni.jpg" alt="Jeni">  
+      </div>  
+      <p style="font-weight: bold; font-size: small;">klik rayakan berkali kali</p>  
+      <a href="#" class="modal-btn celebrate-btn" style="margin-bottom: 10px; border-radius: 30px;">Rayakan</a>  
+    </div>  
+  
+    <div class="modal" id="mabar-modal" style="display: none;">  
+      <span class="emoji bounce" style="text-shadow: 0 0 20px gold;">Mabar!</span>  
+      <div class="modal-content">  
+        <img src="mabar.jpg" alt="Mabar Image">  
+        <div class="text-content">  
+          <h4 class="mabar-text">Ayo Mabar Lagi!</h4>  
+          <p class="mabar-text">"Soalnya sekarang aku mau menang hahaha"</p>  
+        </div>  
+      </div>  
+      <a href="https://wa.me/6285221454357?text=Ayo%20mabar%20stumble%20guys%20lagi%2C%20kamu%20belum%20pernah%20menang" class="modal-btn" style="margin-top: 10px; border-radius: 30px;">Klik Disini untuk Mabar</a>  
+    </div>  
+  
+    <div id="confetti-wrapper"></div>  
+      
+    <!-- Audio Element -->  
+    <audio id="background-music" src="musik.mp3" loop></audio>  
+  </div>  
+  
+  <script>  
+    document.querySelector('.open-btn').addEventListener('click', function () {  
+      // Hide gift box and button  
+      document.querySelector('.gift-box').style.display = 'none';  
+  
+      // Show the modal  
+      document.querySelector('#initial-modal').style.display = 'block';  
+  
+      // Play music  
+      const music = document.getElementById('background-music');  
+      music.play(); // Start playing the music  
+  
+      // Trigger confetti  
+      for (let i = 0; i < 100; i++) {  
+        // Random width & height between 0 and viewport  
+        var randomWidth = Math.floor(Math.random() * window.innerWidth);  
+        var randomHeight = Math.floor(Math.random() * window.innerHeight);  
+  
+        // Create confetti piece  
+        var confetti = document.createElement('div');  
+        confetti.className = 'confetti';  
+        confetti.style.top = randomHeight + 'px';  
+        confetti.style.right = randomWidth + 'px';  
+        confetti.style.backgroundColor = ['#0CD977', '#FF1C1C', '#FF93DE', '#5767ED', '#FFC61C', '#8497B0'][Math.floor(Math.random() * 6)];  
+        confetti.style.animationDelay = Math.random() * 5 + 's'; // Add delay to create a staggered effect  
+        document.getElementById('confetti-wrapper').appendChild(confetti);  
+      }  
+    });  
+  
+    document.querySelector('.celebrate-btn').addEventListener('click', function () {  
+      // Create fireworks  
+      for (let i = 0; i < 15; i++) {  
+        const firework = document.createElement('div');  
+        firework.className = 'firework';  
+        firework.style.backgroundColor = ['#FF1C1C', '#FF93DE', '#0CD977'][Math.floor(Math.random() * 3)];  
+        firework.style.width = Math.random() * 10 + 5 + 'px';  
+        firework.style.height = Math.random() * 10 + 5 + 'px';  
+        firework.style.top = Math.random() * window.innerHeight + 'px';  
+        firework.style.left = Math.random() * window.innerWidth + 'px';  
+        document.body.appendChild(firework);  
+  
+        // Remove firework after animation  
+        firework.addEventListener('animationend', () => {  
+          firework.remove();  
+        });  
+      }  
+  
+      // Create balloons  
+      for (let j = 0; j < 10; j++) {  
+        const balloon = document.createElement('div');  
+        balloon.className = 'balloon';  
+        balloon.style.backgroundColor = ['#FF1C1C', '#FF93DE', '#0CD977', '#B47CFF', '#FFC61C'][Math.floor(Math.random() * 5)];  
+        balloon.style.width = Math.random() * 20 + 15 + 'px';  
+        balloon.style.height = Math.random() * 30 + 20 + 'px';  
+        balloon.style.left = Math.random() * window.innerWidth + 'px';  
+        document.body.appendChild(balloon);  
+  
+        // Remove balloon after animation  
+        balloon.addEventListener('animationend', () => {  
+          balloon.remove();  
+        });  
+      }  
+    });  
+  
+    document.querySelector('.mabar-btn').addEventListener('click', function () {  
+      // Hide initial modal  
+      document.querySelector('#initial-modal').style.display = 'none';  
+      // Show mabar modal  
+      document.querySelector('#mabar-modal').style.display = 'block';  
+    });  
+  
+    document.querySelector('#mabar-modal .modal-btn:last-child').addEventListener('click', function () {  
+      // Hide mabar modal and show initial modal again if needed  
+      document.querySelector('#mabar-modal').style.display = 'none';  
+      document.querySelector('#initial-modal').style.display = 'block';  
+    });  
+  </script>  
+  
+</body>  
+</html>  
