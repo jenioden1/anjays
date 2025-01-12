@@ -205,6 +205,28 @@
       border-radius: 10px 10px 0 0;  
       transform: rotate(45deg);  
     }  
+
+  /* Animasi untuk tombol Rayakan */  
+@keyframes buttonClick {  
+  0% {  
+    transform: scale(1);  
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  
+  }  
+  50% {  
+    transform: scale(0.95);  
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);  
+  }  
+  100% {  
+    transform: scale(1);  
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  
+  }  
+}  
+  
+.modal-btn.animate {  
+  animation: buttonClick 0.3s ease;  
+}  
+
+
   
     .open-btn {  
       margin-top: 20px;  
@@ -344,8 +366,25 @@
       </div>    
       <p style="font-weight: bold; font-size: small;">klik klik rayakan berkali kali dengan cepat</p>    
       <a href="#" class="modal-btn celebrate-btn" style="margin-bottom: 10px; border-radius: 30px;">Rayakan</a>    
+      <a href="#" class="modal-btn mabar-btn" style="border-radius: 30px;">Nyalakan API Klik Disini</a>
     </div>    
-  
+    <div class="modal" id="mabar-modal" style="display: none;">
+      <span class="emoji bounce" style="text-shadow: 0 0 20px gold;">Mabar!</span>
+      <div class="image-container">    
+        <img src="epin.jpg" alt="Epin">    
+        <img src="jeni.jpg" alt="Jeni">    
+      </div>  
+    <div class="modal-content">
+     
+         
+      <div class="text-content">
+        <h4 class="mabar-text">Ayo Nyalain API Lagi!</h4>
+        <p class="mabar-text">"Bisi Keburu Mati API nyaaaaa🔥🔥🔥🔥🔥"</p>
+      </div>
+    </div>
+    <a href="https://wa.me/6285221454357?text=APIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII" class="modal-btn" style="margin-top: 10px; border-radius: 30px;">Klik Disini untuk Nyalakan API</a>  
+
+  </div>
     <div id="confetti-wrapper"></div>    
         
     <!-- Audio Element -->    
@@ -355,6 +394,8 @@
   </div>    
     
   <script>    
+
+  
      // Play music  
      const music = document.getElementById('background-music');  
       music.play(); // Start playing the music  
